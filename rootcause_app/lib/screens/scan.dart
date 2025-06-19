@@ -8,9 +8,35 @@ class ScanScreen extends StatefulWidget {
   State<ScanScreen> createState() => _ScanScreenState();
 }
 
+
 class _ScanScreenState extends State<ScanScreen> {
-  bool _isLoading = false; // CHANGE THIS TO TRUE 
-  bool _permissionDenied = true;
+  bool _isLoading = false; // CHANGE THIS TO TRUE
+  bool _permissionDenied = false; // ALSO CHANGE THIS TO FALSE
+
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissions();
+  }
+
+  @override
+  void dispose(){
+    this.dispose();
+  }
+
+  void _requestPermissions() async {
+    print("Requesting Camera Permissions...");
+    setState(() {
+      _isLoading = true;
+    });
+    var cameraStatus = await Permission.camera.status;
+    if (!cameraStatus.isGranted) {
+      await Permission.camera.request();
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   Widget _buildCameraContent() {
     if (_isLoading) {
