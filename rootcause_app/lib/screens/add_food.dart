@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rootcause_app/screens/scan.dart';
 import 'package:rootcause_app/widgets/header.dart';
 
-class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key});
+class AddFoodScreen extends StatefulWidget {
+  const AddFoodScreen({super.key});
   @override
-  State<ScanScreen> createState() => _ScanScreenState();
+  State<AddFoodScreen> createState() => _AddFoodScreenState();
 }
 
-class _ScanScreenState extends State<ScanScreen> {
+class _AddFoodScreenState extends State<AddFoodScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +21,13 @@ class _ScanScreenState extends State<ScanScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                 child: FilledButton(
-                  onPressed: () {
-                    print("Scan Foods");
-                  },
+                  onPressed:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ScanScreen(),
+                        ),
+                      ),
                   style: FilledButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 50),
                   ),
@@ -39,7 +44,13 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                 ),
               ),
-              const Text('Manual Add Button Will Go Here'),
+              GestureDetector(
+                onTap: () => print("Add Food Manually Pressed"),
+                child: Text(
+                  "Add Food Manually",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
             ],
           ),
         ),

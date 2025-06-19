@@ -84,27 +84,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   SizedBox(height: 5),
                   FilledButton(
                     onPressed: () => print("Implement Manage Subscription"),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xffD9D9D9),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.subscriptions, size: 20,),
+                        Icon(Icons.subscriptions, size: 20, color: Colors.black),
                         SizedBox(width: 5),
-                        Text("Manage Subscription", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                        Text(
+                          "Manage Subscription",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   FilledButton(
                     onPressed: () => print("Implement Change Sync Account"),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xffD9D9D9),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.change_circle, size: 20),
+                        Icon(Icons.change_circle, size: 20, color: Colors.black,),
                         SizedBox(width: 5),
                         Text(
                           "Change Sync Account",
                           style: TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            color: Colors.black
                           ),
                         ),
                       ],
@@ -112,6 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   FilledButton(
                     onPressed: () => print("Implement Delete Backup"),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xffD9D9D9),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
