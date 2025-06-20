@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show PlatformException;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:camera/camera.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -8,24 +10,28 @@ class ScanScreen extends StatefulWidget {
   State<ScanScreen> createState() => _ScanScreenState();
 }
 
-
-class _ScanScreenState extends State<ScanScreen> {
-  bool _isLoading = false; // CHANGE THIS TO TRUE
-  bool _permissionDenied = false; // ALSO CHANGE THIS TO FALSE
+class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
+  bool _isLoading = true;
+  bool _permissionDenied = false;
+  CameraController? _controller;
+  List<CameraDescription>? _cameras;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _requestPermissions();
+    _initializeCamera();
   }
 
   @override
-  void dispose(){
-    this.dispose();
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _controller?.dispose();
+    super.dispose();
   }
 
   void _requestPermissions() async {
-    print("Requesting Camera Permissions...");
     setState(() {
       _isLoading = true;
     });
@@ -36,6 +42,41 @@ class _ScanScreenState extends State<ScanScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> _initializeCamera() async {
+    try {
+      _cameras = await availableCameras();
+      _controller = CameraController(
+        _cameras!.firstWhere(
+          (c) => c.lensDirection == CameraLensDirection.back,
+          orElse: () => _cameras!.first,
+        ),
+        ResolutionPreset.medium,
+        imageFormatGroup: ImageFormatGroup.jpeg,
+        enableAudio: false,
+      );
+
+      await _controller!.initialize();
+
+      if (!mounted) return;
+
+      setState(() => _isLoading = false);
+    } on CameraException catch (e) {
+      setState(() {
+        _isLoading = false;
+        _permissionDenied = e.code == 'CameraAccessDenied';
+      });
+    } on PlatformException catch (e) {
+      setState(() {
+        _isLoading = false;
+        _permissionDenied = e.code == 'CameraAccessDenied';
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   Widget _buildCameraContent() {
